@@ -17,7 +17,7 @@ from typing import List, Dict, Optional, Tuple
 from collections import defaultdict
 from enum import Enum
 
-BASE = Path(__file__).parent.parent
+BASE = Path(__file__).parent
 sys.path.insert(0, str(BASE))
 
 
@@ -447,7 +447,7 @@ class MITREScoringEngine:
 # Main
 # ================================================================
 def main(scenario='all', output_dir=None):
-    output_dir = Path(output_dir or BASE / "D03_integration" / "D03_results")
+    output_dir = Path(output_dir or BASE / "D03_results")
     os.makedirs(output_dir, exist_ok=True)
 
     print("=" * 70)

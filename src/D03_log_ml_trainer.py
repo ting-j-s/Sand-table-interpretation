@@ -83,7 +83,7 @@ class SecurityModelTrainer:
         X_list, y_list = [], []
         for session_dir in session_dirs:
             sid = os.path.basename(session_dir)
-            report_files = list(Path("03_沙盘演绎/D03_integration/D03_results").glob(f"d03_sandbox_{sid}.json"))
+            report_files = list(Path("integration/D03_results").glob(f"d03_sandbox_{sid}.json"))
             sandbox_data = {}
             if report_files:
                 with open(report_files[0], encoding="utf-8") as f: sandbox_data = json.load(f)

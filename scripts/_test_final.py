@@ -2,7 +2,7 @@
 """D03 Final Comprehensive Test with Full Logging"""
 import sys, json, time
 sys.path.insert(0, '.')
-sys.path.insert(0, '03_沙盘演绎/D03_integration')
+sys.path.insert(0, 'integration')
 from datetime import datetime
 from collections import Counter
 
@@ -22,7 +22,7 @@ L('='*60)
 
 # ===== 1. API & Model =====
 L('\n1/6 API & Model Check')
-from real_llm import call_llm, FLASH, PRO, get_available_models
+from src.real_llm import call_llm, FLASH, PRO, get_available_models
 info = get_available_models()
 L(f'  Models: FLASH={info["models"]["flash"]}  PRO={info["models"]["pro"]}  Provider={info["provider"]}')
 
@@ -33,8 +33,8 @@ L(f'  Pro ping:   {r2["total_tokens"]}t ${r2["cost_usd"]:.8f} {r2["latency_s"]:.
 
 # ===== 2. Threat Intel =====
 L('\n2/6 Threat Intelligence (DeepSeek-TI)')
-from D03_real_api_config import RealAPIConfig
-from D03_real_threat_intel import ThreatIntelAggregator
+from src.D03_real_api_config import RealAPIConfig
+from src.D03_real_threat_intel import ThreatIntelAggregator
 cfg = RealAPIConfig()
 ti = ThreatIntelAggregator(cfg)
 
@@ -54,7 +54,7 @@ for ip in ['45.155.205.233', '194.26.29.114', '185.130.5.253', '8.8.8.8']:
 
 # ===== 3. SOC Triage =====
 L('\n3/6 SOC Triage (Real LLM)')
-from D03_real_llm_bridge import SOCLLMBridge, RedLLMBridge
+from src.D03_real_llm_bridge import SOCLLMBridge, RedLLMBridge
 soc = SOCLLMBridge(cfg)
 
 alerts = [
@@ -87,8 +87,8 @@ for name, t in targets:
 
 # ===== 5. Sandbox =====
 L('\n5/6 Sandbox Orchestrator (Real API, 6 rounds)')
-from D03_沙盘编排器_基础版 import SandboxOrchestrator
-from D03_real_llm_bridge import RealLLMBridge as RLM
+from integration.D03_沙盘编排器_基础版 import SandboxOrchestrator
+from src.D03_real_llm_bridge import RealLLMBridge as RLM
 
 _orig = RLM.chat_json
 trace = {'score_real': 0, 'score_cache': 0, 'org_real': 0, 'org_cache': 0, 'atk': 0, 'def': 0}
@@ -137,7 +137,7 @@ RLM.chat_json = _orig
 
 # ===== 6. Multi-Agent =====
 L('\n6/6 Multi-Agent Red/Blue (Real LLM, 4 rounds)')
-from D03_real_agents import RealMultiAgentOrchestrator
+from src.D03_real_agents import RealMultiAgentOrchestrator
 ma = RealMultiAgentOrchestrator(cfg)
 ma.setup_teams(red_count=2, blue_count=2)
 target = {'name': 'enterprise', 'ip': '10.0.1.100', 'services': ['web', 'ssh', 'rdp', 'dns', 'sql']}

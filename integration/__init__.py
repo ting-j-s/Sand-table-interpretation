@@ -5,8 +5,9 @@ Provides evaluation metrics, sandbox orchestration, and cross-module
 interfaces for the D03 sandbox deduction pipeline.
 
 Modules:
-  - D03_evaluation: Escape success rate, defense effectiveness, cost models
-  - D03_sandbox_orchestrator: Cyber range MARL simulation, red/blue rounds
+  - D03_评估引擎_逃逸成功率与成本: Escape success rate, defense effectiveness, cost models
+  - D03_沙盘编排器_基础版: Sandbox orchestration, red/blue rounds
+  - D03_沙盘编排器扩展_红蓝对抗: Extended red-blue teaming
 
 Cross-module interfaces:
   D02 -> D03: Agent flow attack results feed into sandbox evaluation
@@ -15,26 +16,10 @@ Cross-module interfaces:
   D03 -> D06: Cost models from sandbox inform budget controls
 
 Usage:
-  from D03_integration import SandboxOrchestrator, EscapeSuccessRate
-  from D03_integration import BenchmarkResult, DefenseEvaluator
+  from integration.D03_沙盘编排器_基础版 import SandboxOrchestrator
 """
-from .D03_evaluation import (
-    BenchmarkResult,
-    EscapeSuccessRate,
-    DefenseEvaluator,
-    CostModel,
-)
-from .D03_sandbox_orchestrator import (
-    SandboxOrchestrator,
-)
 
 __all__ = [
-    # Evaluation
-    "BenchmarkResult",
-    "EscapeSuccessRate",
-    "DefenseEvaluator",
-    "CostModel",
-    # Orchestration
     "SandboxOrchestrator",
 ]
 

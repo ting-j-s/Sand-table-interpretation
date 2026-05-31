@@ -10,12 +10,12 @@ import json, os, time, argparse, sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent.parent
+BASE_DIR = Path(__file__).parent.parent
 sys.path.insert(0, str(BASE_DIR))
 
-from D03_real_api_config import RealAPIConfig
-from D03_real_llm_bridge import RealLLMBridge, SOCLLMBridge, RedLLMBridge
-from D03_real_threat_intel import ThreatIntelAggregator
+from src.D03_real_api_config import RealAPIConfig
+from src.D03_real_llm_bridge import RealLLMBridge, SOCLLMBridge, RedLLMBridge
+from src.D03_real_threat_intel import ThreatIntelAggregator
 
 RESULTS_DIR = Path(__file__).parent / "D03_results"
 RESULTS_DIR.mkdir(exist_ok=True)
@@ -347,7 +347,7 @@ class SandboxOrchestrator:
         # 初始化日志生成器
         log_gen = None
         try:
-            from D03_log_generator import CompanyLogGenerator
+            from src.D03_log_generator import CompanyLogGenerator
             log_gen = CompanyLogGenerator(org_size=self.org_size)
         except ImportError:
             pass
@@ -409,7 +409,7 @@ class SandboxOrchestrator:
 
         # 打印日志统计
         if log_gen:
-            from D03_log_generator import LOG_DIR
+            from src.D03_log_generator import LOG_DIR
             log_dir = LOG_DIR / self.session_id
             total_events = 0
             for r in range(1, self.rounds + 1):

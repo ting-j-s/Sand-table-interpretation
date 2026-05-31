@@ -182,7 +182,7 @@ class D03RealRunner:
 
         # === 传统编排器运行 ===
         print("\n[编排器] 运行传统沙盘...")
-        from D03_integration.D03_沙盘编排器_基础版 import SandboxOrchestrator
+        from integration.D03_沙盘编排器_基础版 import SandboxOrchestrator
         orch = SandboxOrchestrator(
             rounds=rounds, org_size=50,
             use_real_api=(self.mode != "mock")
@@ -199,7 +199,7 @@ class D03RealRunner:
 
     def save_report(self):
         """保存综合报告"""
-        output_dir = BASE_DIR / "03_沙盘演绎" / "D03_integration" / "D03_results"
+        output_dir = BASE_DIR.parent / "integration" / "D03_results"
         output_dir.mkdir(parents=True, exist_ok=True)
 
         report_path = output_dir / f"d03_real_{self.session_id}.json"
