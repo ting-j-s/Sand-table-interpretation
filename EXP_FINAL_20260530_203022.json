@@ -1,0 +1,726 @@
+{
+  "ti": {
+    "45.155.205.233": {
+      "verdict": "malicious",
+      "threats": [
+        "VT: 18 engines flagged malicious",
+        "AbuseIPDB: confidence 95%",
+        "Shodan: 3 known CVEs",
+        "OTX: 1 pulses"
+      ],
+      "vt": {
+        "malicious": 18,
+        "suspicious": 5,
+        "harmless": 42,
+        "engines": 73,
+        "dets": [
+          {
+            "engine": "Fortinet",
+            "result": "C2/Generic"
+          },
+          {
+            "engine": "Kaspersky",
+            "result": "Trojan-Downloader.Win32.Agent"
+          },
+          {
+            "engine": "Symantec",
+            "result": "Trojan.Gen.2"
+          }
+        ]
+      },
+      "abuseipdb": {
+        "score": 95,
+        "reports": 12,
+        "isp": "Fibergrid Group",
+        "country": "NL"
+      },
+      "shodan": {
+        "ports": [
+          443,
+          8443,
+          53
+        ],
+        "vulns": [
+          "CVE-2023-44487",
+          "CVE-2022-0778",
+          "CVE-2021-3449"
+        ],
+        "org": "STARK INDUSTRIES",
+        "os": "Linux 3.x (Debian 11)"
+      },
+      "otx": {
+        "pulses": 1,
+        "samples": [
+          "Suspicious C2 Infrastructure - Hosting Malware Payloads"
+        ]
+      }
+    },
+    "194.26.29.114": {
+      "verdict": "malicious",
+      "threats": [
+        "VT: 18 engines flagged malicious",
+        "AbuseIPDB: confidence 95%",
+        "Shodan: 2 known CVEs",
+        "OTX: 1 pulses"
+      ],
+      "vt": {
+        "malicious": 18,
+        "suspicious": 5,
+        "harmless": 42,
+        "engines": 73,
+        "dets": [
+          {
+            "engine": "Fortinet",
+            "result": "C2/Generic"
+          },
+          {
+            "engine": "Kaspersky",
+            "result": "Trojan-Downloader.Win32.Agent"
+          },
+          {
+            "engine": "McAfee",
+            "result": "Artemis!19426"
+          }
+        ]
+      },
+      "abuseipdb": {
+        "score": 95,
+        "reports": 12,
+        "isp": "LLC KomTehTsentr",
+        "country": "RU"
+      },
+      "shodan": {
+        "ports": [
+          443,
+          8080,
+          993
+        ],
+        "vulns": [
+          "CVE-2023-44487",
+          "CVE-2021-3449"
+        ],
+        "org": "STARK INDUSTRIES",
+        "os": "Linux 3.x (Debian 11)"
+      },
+      "otx": {
+        "pulses": 1,
+        "samples": [
+          "Suspicious C2 Infrastructure - Hosting Provider Abuse"
+        ]
+      }
+    },
+    "185.130.5.253": {
+      "verdict": "malicious",
+      "threats": [
+        "VT: 18 engines flagged malicious",
+        "AbuseIPDB: confidence 85%",
+        "Shodan: 3 known CVEs",
+        "OTX: 1 pulses"
+      ],
+      "vt": {
+        "malicious": 18,
+        "suspicious": 5,
+        "harmless": 42,
+        "engines": 70,
+        "dets": [
+          {
+            "engine": "Fortinet",
+            "result": "C2/Generic"
+          },
+          {
+            "engine": "Kaspersky",
+            "result": "Trojan-Downloader.Win32.Agent"
+          },
+          {
+            "engine": "McAfee",
+            "result": "Artemis!1851305253"
+          }
+        ]
+      },
+      "abuseipdb": {
+        "score": 85,
+        "reports": 12,
+        "isp": "Fiber Grid B.V.",
+        "country": "NL"
+      },
+      "shodan": {
+        "ports": [
+          443,
+          445,
+          3389
+        ],
+        "vulns": [
+          "CVE-2020-1472",
+          "CVE-2019-0708",
+          "CVE-2021-34473"
+        ],
+        "org": "STARK INDUSTRIES",
+        "os": "Windows Server 2019"
+      },
+      "otx": {
+        "pulses": 1,
+        "samples": [
+          "Suspicious C2 Infrastructure - Hosting Provider Abuse"
+        ]
+      }
+    },
+    "8.8.8.8": {
+      "verdict": "suspicious",
+      "threats": [
+        "Shodan: 2 known CVEs",
+        "OTX: 1 pulses"
+      ],
+      "vt": {
+        "malicious": 0,
+        "suspicious": 1,
+        "harmless": 68,
+        "engines": 74,
+        "dets": []
+      },
+      "abuseipdb": {
+        "score": 5,
+        "reports": 2,
+        "isp": "Google LLC",
+        "country": "US"
+      },
+      "shodan": {
+        "ports": [
+          53,
+          443,
+          853
+        ],
+        "vulns": [
+          "CVE-2023-50387",
+          "CVE-2023-50868"
+        ],
+        "org": "Google",
+        "os": "Linux (Google Container-Optimized OS)"
+      },
+      "otx": {
+        "pulses": 1,
+        "samples": [
+          "Google Public DNS - Legitimate Infrastructure"
+        ]
+      }
+    }
+  },
+  "soc": [
+    {
+      "type": "C2_Beacon",
+      "severity": 0.92,
+      "priority": "critical",
+      "escalate": true,
+      "action": "立即隔离源IP 45.155.205.233，阻断所有出站连接，并启动深度取证调查。",
+      "confidence": 0.95
+    },
+    {
+      "type": "ransomware",
+      "severity": 0.88,
+      "priority": "critical",
+      "escalate": true,
+      "action": "立即隔离受影响主机，阻止所有出站连接，通知事件响应团队进行取证分析，并启动勒索软件应急响应流程。",
+      "confidence": 0.95
+    },
+    {
+      "type": "credential_theft",
+      "severity": 0.72,
+      "priority": "critical",
+      "escalate": true,
+      "action": "立即隔离受影响的域控制器，禁用相关账户，并启动密码重置流程。同时收集lsass dump相关证据，进行深度取证分析。",
+      "confidence": 0.95
+    },
+    {
+      "type": "suspicious_login",
+      "severity": 0.35,
+      "priority": "low",
+      "escalate": false,
+      "action": "Monitor the source IP for additional failed attempts and consider updating access policies if off-hours activity is unusual.",
+      "confidence": 0.3
+    }
+  ],
+  "red_plans": [
+    {
+      "target": "finance",
+      "maturity": "medium",
+      "campaign": "targeted_intrusion",
+      "phases": 13,
+      "success_prob": 0.45,
+      "duration": "14 days",
+      "first_3": [
+        {
+          "step": 1,
+          "mitre": "T1595 - Active Scanning",
+          "stealth": "low",
+          "prob": 0.85
+        },
+        {
+          "step": 2,
+          "mitre": "T1190 - Exploit Public-Facing Application",
+          "stealth": "medium",
+          "prob": 0.65
+        },
+        {
+          "step": 3,
+          "mitre": "T1059.003 - Windows Command Shell",
+          "stealth": "medium",
+          "prob": 0.75
+        }
+      ]
+    },
+    {
+      "target": "healthcare",
+      "maturity": "low",
+      "campaign": "data_exfiltration",
+      "phases": 10,
+      "success_prob": 0.55,
+      "duration": "14-21 days",
+      "first_3": [
+        {
+          "step": 1,
+          "mitre": "T1566.001 - Spearphishing Attachment",
+          "stealth": "medium",
+          "prob": 0.85
+        },
+        {
+          "step": 2,
+          "mitre": "T1204.002 - User Execution: Malicious File",
+          "stealth": "low",
+          "prob": 0.8
+        },
+        {
+          "step": 3,
+          "mitre": "T1547.001 - Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder",
+          "stealth": "high",
+          "prob": 0.75
+        }
+      ]
+    },
+    {
+      "target": "energy",
+      "maturity": "high",
+      "campaign": "targeted_attack",
+      "phases": 6,
+      "success_prob": 0.35,
+      "duration": "14-21 days",
+      "first_3": [
+        {
+          "step": "Initial Access via VPN Credential Harvesting",
+          "mitre": "T1566.003 (Spearphishing via Service)",
+          "stealth": 0.8,
+          "prob": 0.65
+        },
+        {
+          "step": "Exploit VPN Vulnerability for Persistence",
+          "mitre": "T1133 (External Remote Services)",
+          "stealth": 0.75,
+          "prob": 0.7
+        },
+        {
+          "step": "Lateral Movement to SCADA Network via SSH",
+          "mitre": "T1021.004 (SSH)",
+          "stealth": 0.6,
+          "prob": 0.55
+        }
+      ]
+    }
+  ],
+  "sandbox": {
+    "scores": [
+      72,
+      80,
+      78,
+      83,
+      83,
+      83,
+      88,
+      88
+    ],
+    "delta": 16,
+    "details": [
+      {
+        "round": 1,
+        "score": 72,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": false,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 2,
+        "score": 80,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": false,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 3,
+        "score": 78,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 4,
+        "score": 83,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 5,
+        "score": 83,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 6,
+        "score": 83,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 7,
+        "score": 88,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      },
+      {
+        "round": 8,
+        "score": 88,
+        "attack": {
+          "vectors": [
+            "T1592.001",
+            "T1583.001",
+            "T1566.001",
+            "T1204.002"
+          ],
+          "init_access": true,
+          "api": true,
+          "dwell_min": 45
+        },
+        "defense": {
+          "detected": true,
+          "mtd": true,
+          "contain_min": 12,
+          "api": true
+        },
+        "org": {
+          "mfa": true,
+          "review": true,
+          "segment": "moderate",
+          "team_ratio": 0.08,
+          "api": true,
+          "reasoning": ""
+        }
+      }
+    ]
+  },
+  "agents": [
+    {
+      "round": 1,
+      "agent": "red_000",
+      "action": "recon",
+      "success": true,
+      "detected": false,
+      "reasoning": "目标防御水平中等，开放多个常见服务端口，侦察操作（如端口扫描）成功率较高，但可能触发基础IDS告警。",
+      "success_prob": 0.85,
+      "detection_prob": 0.35,
+      "mitre": "T1046"
+    },
+    {
+      "round": 1,
+      "agent": "red_001",
+      "action": "recon",
+      "success": true,
+      "detected": false,
+      "reasoning": "目标防御水平中等，开放多个常见服务端口，侦察操作（如端口扫描）成功率较高，但可能触发基础IDS告警。",
+      "success_prob": 0.85,
+      "detection_prob": 0.35,
+      "mitre": "T1046"
+    },
+    {
+      "round": 2,
+      "agent": "red_000",
+      "action": "exploit",
+      "success": true,
+      "detected": false,
+      "reasoning": "目标防御中等，存在已知漏洞CVE-2023-XXXX，但多服务暴露增加检测面，成功概率中等偏高，检测风险中等。",
+      "success_prob": 0.6,
+      "detection_prob": 0.4,
+      "mitre": "T1190"
+    },
+    {
+      "round": 2,
+      "agent": "red_001",
+      "action": "exploit",
+      "success": true,
+      "detected": false,
+      "reasoning": "目标防御中等，存在已知漏洞CVE-2023-XXXX，但多服务暴露增加检测面，成功概率中等偏高，检测风险中等。",
+      "success_prob": 0.6,
+      "detection_prob": 0.4,
+      "mitre": "T1190"
+    },
+    {
+      "round": 3,
+      "agent": "red_000",
+      "action": "exploit",
+      "success": true,
+      "detected": true,
+      "reasoning": "中等防御水平下利用CVE-2023-XXXX漏洞，成功率受限于补丁状态和WAF检测，但多服务暴露增加了攻击面。",
+      "success_prob": 0.45,
+      "detection_prob": 0.65,
+      "mitre": "T1190"
+    },
+    {
+      "round": 3,
+      "agent": "red_001",
+      "action": "exploit",
+      "success": true,
+      "detected": true,
+      "reasoning": "中等防御水平下利用CVE-2023-XXXX漏洞，成功率受限于补丁状态和WAF检测，但多服务暴露增加了攻击面。",
+      "success_prob": 0.45,
+      "detection_prob": 0.65,
+      "mitre": "T1190"
+    },
+    {
+      "round": 4,
+      "agent": "red_000",
+      "action": "persist",
+      "success": true,
+      "detected": true,
+      "reasoning": "防御水平较高，通过计划任务持久化易被EDR监控，但目标服务多样提供入口机会。",
+      "success_prob": 0.5,
+      "detection_prob": 0.7,
+      "mitre": "T1053.005"
+    },
+    {
+      "round": 4,
+      "agent": "red_001",
+      "action": "persist",
+      "success": true,
+      "detected": true,
+      "reasoning": "防御水平较高，通过计划任务持久化易被EDR监控，但目标服务多样提供入口机会。",
+      "success_prob": 0.5,
+      "detection_prob": 0.7,
+      "mitre": "T1053.005"
+    },
+    {
+      "round": 5,
+      "agent": "red_000",
+      "action": "lateral",
+      "success": false,
+      "detected": true,
+      "reasoning": "高防御水平(0.8)下横向移动至多服务目标(10.0.1.100)易被EDR/网络监控检测，但利用SQL或DNS服务可能提供有限成功机会。",
+      "success_prob": 0.25,
+      "detection_prob": 0.85,
+      "mitre": "T1021"
+    },
+    {
+      "round": 5,
+      "agent": "red_001",
+      "action": "lateral",
+      "success": false,
+      "detected": true,
+      "reasoning": "高防御水平(0.8)下横向移动至多服务目标(10.0.1.100)易被EDR/网络监控检测，但利用SQL或DNS服务可能提供有限成功机会。",
+      "success_prob": 0.25,
+      "detection_prob": 0.85,
+      "mitre": "T1021"
+    },
+    {
+      "round": 6,
+      "agent": "red_000",
+      "action": "cleanup",
+      "success": false,
+      "detected": true,
+      "reasoning": "高防御水平下清理痕迹易被日志审计系统捕获，但操作本身简单可能部分成功。",
+      "success_prob": 0.3,
+      "detection_prob": 0.85,
+      "mitre": "T1070"
+    },
+    {
+      "round": 6,
+      "agent": "red_001",
+      "action": "cleanup",
+      "success": false,
+      "detected": true,
+      "reasoning": "高防御水平下清理痕迹易被日志审计系统捕获，但操作本身简单可能部分成功。",
+      "success_prob": 0.3,
+      "detection_prob": 0.85,
+      "mitre": "T1070"
+    }
+  ],
+  "quality": {
+    "ti_ips_tested": 4,
+    "ti_all_malicious_correct": true,
+    "ti_clean_correct": true,
+    "soc_priority_correct": true,
+    "red_min_phases": 6,
+    "sandbox_score_delta": 16,
+    "sandbox_score_unique": 5,
+    "agent_llm_reasoning_rate": "12/12",
+    "tool_distribution": {
+      "recon": 2,
+      "exploit": 4,
+      "persist": 2,
+      "lateral": 2,
+      "cleanup": 2
+    },
+    "total_elapsed_s": 115
+  }
+}

@@ -1,0 +1,99 @@
+[000.0s] ============================================================
+[000.0s] D03 Full Test — 20260531_044320
+[000.0s] ============================================================
+[000.0s] 
+1/6 API & Model Check
+[000.1s]   Models: FLASH=deepseek-v4-flash  PRO=deepseek-v4-pro  Provider=deepseek
+[001.1s]   Flash ping: 13t $0.00000252 0.9s
+[002.3s]   Pro ping:   13t $0.00004832 1.2s
+[002.3s] 
+2/6 Threat Intelligence (DeepSeek-TI)
+[023.1s]   45.155.205.233: malicious    | VT=70/96 | AbuseIPDB=85% | Shodan_vulns=0 | OTX_pulses=1
+[023.1s]          VT: 70 engines flagged malicious
+[023.1s]          AbuseIPDB: confidence 85%
+[023.1s]          OTX: 1 pulses
+[058.9s]   194.26.29.114: malicious    | VT=60/70 | AbuseIPDB=90% | Shodan_vulns=0 | OTX_pulses=1
+[058.9s]          VT: 60 engines flagged malicious
+[058.9s]          AbuseIPDB: confidence 90%
+[058.9s]          OTX: 1 pulses
+[094.3s]   185.130.5.253: malicious    | VT=35/70 | AbuseIPDB=90% | Shodan_vulns=0 | OTX_pulses=1
+[094.3s]          VT: 35 engines flagged malicious
+[094.3s]          AbuseIPDB: confidence 90%
+[094.3s]          OTX: 1 pulses
+[108.1s]   8.8.8.8: clean        | VT=0/80 | AbuseIPDB=0% | Shodan_vulns=0 | OTX_pulses=0
+[108.1s] 
+3/6 SOC Triage (Real LLM)
+[110.8s]   C2_Beacon            sev=0.92 -> priority=critical escalate=True  conf=0.92
+[110.8s]     action: 立即阻断源IP 45.155.205.233的所有出站流量，并对受影响主机进行隔离取证，同时检查beacon通信的其他相关日志
+[113.4s]   ransomware           sev=0.88 -> priority=critical escalate=True  conf=0.95
+[113.4s]     action: 立即隔离受影响主机，切断网络连接，禁用SMB/文件共享服务，通知事件响应团队进行取证和恢复。
+[116.2s]   credential_theft     sev=0.72 -> priority=critical escalate=True  conf=0.95
+[116.2s]     action: 立即隔离受影响主机，重置所有域管理员帐户密码，调查攻击来源并执行全面的凭证审计。
+[118.7s]   suspicious_login     sev=0.35 -> priority=low      escalate=False conf=0.2
+[118.7s]     action: 记录告警并监控该IP后续行为，无需立即处理。
+[118.7s] 
+4/6 Red Team Attack Plans (Real LLM)
+[128.1s]   finance      (medium): 5 phases  prob=0.55  campaign=Financial Data Exfiltration
+[128.1s]     [Web Application Vulnerability ] MITRE=T1190           stealth=medium prob=0.7
+[128.1s]     [Credential Dumping from Web Se] MITRE=T1003           stealth=medium prob=0.6
+[128.1s]     [RDP Lateral Movement] MITRE=T1021.001       stealth=low    prob=0.65
+[138.7s]   healthcare   (low   ): 11 phases  prob=0.75  campaign=Web and Email Exploitation
+[138.7s]     [Exploit public-facing web appl] MITRE=T1190           stealth=medium prob=0.85
+[138.7s]     [Phishing with malicious attach] MITRE=T1566.001       stealth=low    prob=0.7
+[138.7s]     [Execute payload via PowerShell] MITRE=T1059.001       stealth=medium prob=0.9
+[177.1s]   energy       (high  ): 12 phases  prob=0.35  campaign=APT-ICS
+[177.1s]     [Exploit public-facing web appl] MITRE=T1190           stealth=high   prob=0.25
+[177.1s]     [Abuse valid accounts via VPN] MITRE=T1078           stealth=high   prob=0.35
+[177.1s]     [Execute malicious PowerShell s] MITRE=T1059.001       stealth=medium prob=0.7
+[177.1s] 
+5/6 Sandbox Orchestrator (Real API, 6 rounds)
+[459.3s]   Score trajectory: [85, 88, 98, 93, 92, 88]  delta=13
+[459.3s]   API calls trace: score=6real+0cache  org=1real+5cache  attack=7  defense=6
+[459.3s]   API-driven: attack=6/6  defense=6/6  org=6/6
+[459.3s]   Per-round breakdown:
+[459.3s]     R1: score=85  vectors=['T1566.001', 'T1204.002', 'T1053.005']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s]     R2: score=88  vectors=['T1189', 'T1204.001', 'T1136.001']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s]     R3: score=98  vectors=['T1190', 'T1059.001', 'T1547.001']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s]     R4: score=93  vectors=['T1566.001', 'T1059.001', 'T1053.005']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s]     R5: score=92  vectors=['T1566.001', 'T1218.005', 'T1562.001']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s]     R6: score=88  vectors=['T1566.002', 'T1204.002', 'T1547.001']  detected=True  mtd=True  mfa=True  seg=moderate
+[459.3s] 
+6/6 Multi-Agent Red/Blue (Real LLM, 4 rounds)
+[477.0s]   R1: 2/2success  2detected  0blue_detections
+[530.6s]   R2: 2/2success  0detected  4blue_detections
+[558.1s]   R3: 2/2success  0detected  0blue_detections
+[611.1s]   R4: 0/2success  2detected  4blue_detections
+[611.1s] 
+  Agent operation log:
+[611.1s]     R1 [red_000] recon     success=True   detected=True   succ_p=0.85  det_p=0.55  mitre=T1595
+[611.1s]            reasoning: 目标防御中等，开放多个常见端口，主动扫描易成功，但可能被基本IDS检测到。
+[611.1s]     R1 [red_001] recon     success=True   detected=True   succ_p=0.85  det_p=0.55  mitre=T1595
+[611.1s]            reasoning: 目标防御中等，开放多个常见端口，主动扫描易成功，但可能被基本IDS检测到。
+[611.1s]     R2 [red_000] exploit   success=True   detected=False  succ_p=0.70  det_p=0.50  mitre=T1210
+[611.1s]            reasoning: 已知漏洞CVE-2023-XXXX增加了利用成功可能性，但防御水平中等，可能部分缓解或监控导致检测风险中等。
+[611.1s]     R2 [red_001] exploit   success=True   detected=False  succ_p=0.70  det_p=0.50  mitre=T1210
+[611.1s]            reasoning: 已知漏洞CVE-2023-XXXX增加了利用成功可能性，但防御水平中等，可能部分缓解或监控导致检测风险中等。
+[611.1s]     R3 [red_000] persist   success=True   detected=False  succ_p=0.50  det_p=0.50  mitre=T1053.005
+[611.1s]            reasoning: 计划任务是常见持久化方法，防御水平中等，成功与检测风险相当。
+[611.1s]     R3 [red_001] persist   success=True   detected=False  succ_p=0.50  det_p=0.50  mitre=T1053.005
+[611.1s]            reasoning: 计划任务是常见持久化方法，防御水平中等，成功与检测风险相当。
+[611.1s]     R4 [red_000] exploit   success=False  detected=True   succ_p=0.30  det_p=0.70  mitre=T1190
+[611.1s]            reasoning: 防御级别较高(0.7)且存在多种服务，但利用的CVE-2023-XXXX漏洞可能被部分缓解，成功概率中等偏低；漏洞利用易触发告警，检测概率高。
+[611.1s]     R4 [red_001] exploit   success=False  detected=True   succ_p=0.30  det_p=0.70  mitre=T1190
+[611.1s]            reasoning: 防御级别较高(0.7)且存在多种服务，但利用的CVE-2023-XXXX漏洞可能被部分缓解，成功概率中等偏低；漏洞利用易触发告警，检测概率高。
+[611.1s] 
+============================================================
+[611.1s] TEST COMPLETE (611s)
+[611.1s] ============================================================
+[611.1s]   [PASS] API-Flash
+[611.1s]   [PASS] API-Pro
+[611.1s]   [PASS] TI-Malicious IPs — 3 known C2 IPs must be malicious
+[611.1s]   [PASS] TI-Clean IP — 8.8.8.8 should be suspicious/clean
+[611.1s]   [PASS] SOC-Priority correct
+[611.1s]   [PASS] Red-Plan phases
+[611.1s]   [PASS] Sandbox-Score delta — delta=13
+[611.1s]   [PASS] Sandbox-Score real LLM — real=6
+[611.1s]   [PASS] Sandbox-All API — atk=6 def=6
+[611.1s]   [PASS] Agent-LLM reasoning — 8/8 ops
+[611.1s] 
+  Total: 10/10 checks passed

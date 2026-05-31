@@ -1,0 +1,884 @@
+{
+  "session_id": "20260531_052836",
+  "mode": "real_api",
+  "rounds": 10,
+  "org_size": 40,
+  "history": [
+    {
+      "round": 1,
+      "data_collection": {
+        "round": 1,
+        "phase": "data_collection",
+        "normal_traffic_gb": 15.8,
+        "user_events": 4640,
+        "security_alerts": 13,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 1,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1592",
+          "T1566",
+          "T1190",
+          "T1003",
+          "T1053",
+          "T1105",
+          "T1021",
+          "T1041"
+        ],
+        "initial_access_success": false,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "初始入侵渗透",
+          "estimated_duration": "3-7 days",
+          "overall_success_prob": 0.7
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 1,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即对相关主机进行深度调查，检查是否存在被扫描或信息收集的痕迹，加强网络监控以检测后续攻击阶段（如T1566钓鱼、T1190漏洞利用、T1003凭证转储、T1053计划任务），并考虑临时封锁可疑IP或域。",
+        "llm_triage": {
+          "priority": "high",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即对相关主机进行深度调查，检查是否存在被扫描或信息收集的痕迹，加强网络监控以检测后续攻击阶段（如T1566钓鱼、T1190漏洞利用、T1003凭证转储、T1053计划任务），并考虑临时封锁可疑IP或域。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 88
+    },
+    {
+      "round": 2,
+      "data_collection": {
+        "round": 2,
+        "phase": "data_collection",
+        "normal_traffic_gb": 16.3,
+        "user_events": 4760,
+        "security_alerts": 14,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 2,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1598",
+          "T1566.001",
+          "T1204.002",
+          "T1547.001",
+          "T1068",
+          "T1055",
+          "T1003.001",
+          "T1082",
+          "T1021.002",
+          "T1572"
+        ],
+        "initial_access_success": false,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "混合式（钓鱼+漏洞利用）",
+          "estimated_duration": "5-10 days",
+          "overall_success_prob": 0.62
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 2,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即隔离受影响主机，重置相关用户凭据，检查注册表Run键值异常，调查钓鱼邮件来源及附件，执行端点取证分析。",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即隔离受影响主机，重置相关用户凭据，检查注册表Run键值异常，调查钓鱼邮件来源及附件，执行端点取证分析。",
+          "confidence": 0.95
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 84
+    },
+    {
+      "round": 3,
+      "data_collection": {
+        "round": 3,
+        "phase": "data_collection",
+        "normal_traffic_gb": 16.8,
+        "user_events": 4880,
+        "security_alerts": 15,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 3,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1595",
+          "T1190",
+          "T1203",
+          "T1053",
+          "T1041"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "fallback",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.4
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 3,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "Immediately isolate the affected host from the network, block outbound C2 communication, and initiate full forensic investigation. Check for persistence mechanisms and lateral movement.",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "Immediately isolate the affected host from the network, block outbound C2 communication, and initiate full forensic investigation. Check for persistence mechanisms and lateral movement.",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 82
+    },
+    {
+      "round": 4,
+      "data_collection": {
+        "round": 4,
+        "phase": "data_collection",
+        "normal_traffic_gb": 17.3,
+        "user_events": 5000,
+        "security_alerts": 16,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 4,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1566.002",
+          "T1204.001",
+          "T1547.009",
+          "T1134.002",
+          "T1564.001",
+          "T1003.002",
+          "T1083",
+          "T1021.006",
+          "T1560.001",
+          "T1071.001",
+          "T1048.002"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "鱼叉式钓鱼+横向移动",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.6
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 4,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即隔离受影响终端，阻断网络通信，收集进程内存和网络连接信息，进行全系统恶意软件扫描，并保留相关日志以供进一步调查。",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即隔离受影响终端，阻断网络通信，收集进程内存和网络连接信息，进行全系统恶意软件扫描，并保留相关日志以供进一步调查。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 90
+    },
+    {
+      "round": 5,
+      "data_collection": {
+        "round": 5,
+        "phase": "data_collection",
+        "normal_traffic_gb": 17.8,
+        "user_events": 5120,
+        "security_alerts": 17,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 5,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1595",
+          "T1566.002",
+          "T1204.001",
+          "T1547.009",
+          "T1134.002",
+          "T1003.002",
+          "T1083",
+          "T1021.006",
+          "T1560.001",
+          "T1071.001",
+          "T1048.002"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "Multi-stage Spear Phishing with Exploitation",
+          "estimated_duration": "5-10 days",
+          "overall_success_prob": 0.75
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 5,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即阻止来源IP，对受影响主机进行全量取证分析，确认T1566、T1204、T1547、T1134相关攻击步骤是否成功执行，并清除所有后门及持久化机制。",
+        "llm_triage": {
+          "priority": "high",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即阻止来源IP，对受影响主机进行全量取证分析，确认T1566、T1204、T1547、T1134相关攻击步骤是否成功执行，并清除所有后门及持久化机制。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 88
+    },
+    {
+      "round": 6,
+      "data_collection": {
+        "round": 6,
+        "phase": "data_collection",
+        "normal_traffic_gb": 18.3,
+        "user_events": 5240,
+        "security_alerts": 18,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 6,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1595",
+          "T1588.005",
+          "T1566.001",
+          "T1059.001",
+          "T1547.001",
+          "T1068",
+          "T1562.001",
+          "T1003.006",
+          "T1046",
+          "T1021.001",
+          "T1125",
+          "T1071.004",
+          "T1041"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "针对性鱼叉攻击（含漏洞利用）",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.45
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 6,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即隔离受影响主机，阻断所有出站连接，启动全面事件响应流程，收集相关日志进行深入调查。",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即隔离受影响主机，阻断所有出站连接，启动全面事件响应流程，收集相关日志进行深入调查。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 90
+    },
+    {
+      "round": 7,
+      "data_collection": {
+        "round": 7,
+        "phase": "data_collection",
+        "normal_traffic_gb": 18.8,
+        "user_events": 5360,
+        "security_alerts": 19,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 2,
+            "details": [
+              "VT: 65 engines flagged malicious",
+              "AbuseIPDB: confidence 92%"
+            ],
+            "verdict": "suspicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 7,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1595",
+          "T1190",
+          "T1203",
+          "T1053",
+          "T1041"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "fallback",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.4
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 7,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即隔离受影响主机，阻止相关IP和域名，启动全面事件响应流程，收集并分析相关日志以确认攻击范围和数据泄露情况。",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即隔离受影响主机，阻止相关IP和域名，启动全面事件响应流程，收集并分析相关日志以确认攻击范围和数据泄露情况。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 98
+    },
+    {
+      "round": 8,
+      "data_collection": {
+        "round": 8,
+        "phase": "data_collection",
+        "normal_traffic_gb": 19.3,
+        "user_events": 5480,
+        "security_alerts": 20,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 4,
+            "details": [
+              "VT: 8 engines flagged malicious",
+              "AbuseIPDB: confidence 85%",
+              "Shodan: 2 known CVEs",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 8,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1133",
+          "T1047",
+          "T1136.001",
+          "T1036.005",
+          "T1110.003",
+          "T1021.002",
+          "T1119",
+          "T1572",
+          "T1048"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "外部远程服务+水槽攻击",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.4
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 8,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即阻断外部远程服务（T1133）的网络访问，隔离受影响主机，并启动深度威胁狩猎以排查后续T1047、T1136.001、T1036.005、T1110.003等攻击链。同时检查历史日志确认横向移动和持久化行为。",
+        "llm_triage": {
+          "priority": "high",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即阻断外部远程服务（T1133）的网络访问，隔离受影响主机，并启动深度威胁狩猎以排查后续T1047、T1136.001、T1036.005、T1110.003等攻击链。同时检查历史日志确认横向移动和持久化行为。",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 95
+    },
+    {
+      "round": 9,
+      "data_collection": {
+        "round": 9,
+        "phase": "data_collection",
+        "normal_traffic_gb": 19.8,
+        "user_events": 5600,
+        "security_alerts": 21,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 4,
+            "details": [
+              "VT: 8 engines flagged malicious",
+              "AbuseIPDB: confidence 85%",
+              "Shodan: 2 known CVEs",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 9,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1566.002",
+          "T1204.001",
+          "T1059.001",
+          "T1547.001",
+          "T1083",
+          "T1021.006",
+          "T1071.001",
+          "T1020"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "spear_phishing_with_link",
+          "estimated_duration": "7-14 days",
+          "overall_success_prob": 0.38
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 9,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "Immediately isolate the affected host from the network to prevent lateral movement. Perform endpoint forensic analysis to identify the initial phishing attachment, execution artifacts (e.g., PowerShell/script execution), persistence mechanism (T1547.001 registry run keys), and any file discovery activities. Collect full memory dump and relevant registry hives for deep investigation. Block related indicators (file hashes, IPs, domains) across the environment.",
+        "llm_triage": {
+          "priority": "high",
+          "escalate_to_tier2": true,
+          "recommended_action": "Immediately isolate the affected host from the network to prevent lateral movement. Perform endpoint forensic analysis to identify the initial phishing attachment, execution artifacts (e.g., PowerShell/script execution), persistence mechanism (T1547.001 registry run keys), and any file discovery activities. Collect full memory dump and relevant registry hives for deep investigation. Block related indicators (file hashes, IPs, domains) across the environment.",
+          "confidence": 0.85
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 88
+    },
+    {
+      "round": 10,
+      "data_collection": {
+        "round": 10,
+        "phase": "data_collection",
+        "normal_traffic_gb": 20.3,
+        "user_events": 5720,
+        "security_alerts": 22,
+        "baseline_established": true,
+        "threat_intel": {
+          "45.155.205.233": {
+            "total_sources": 4,
+            "active_threats": 3,
+            "details": [
+              "VT: 45 engines flagged malicious",
+              "AbuseIPDB: confidence 95%",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          },
+          "194.26.29.114": {
+            "total_sources": 4,
+            "active_threats": 4,
+            "details": [
+              "VT: 8 engines flagged malicious",
+              "AbuseIPDB: confidence 85%",
+              "Shodan: 2 known CVEs",
+              "OTX: 1 pulses"
+            ],
+            "verdict": "malicious"
+          }
+        }
+      },
+      "attack": {
+        "round": 10,
+        "phase": "red_team_attack",
+        "attack_vectors": [
+          "T1566.001",
+          "T1204.001",
+          "T1059.001",
+          "T1053.005",
+          "T1055.001",
+          "T1027",
+          "T1003.001",
+          "T1016",
+          "T1550.002",
+          "T1074",
+          "T1095",
+          "T1011"
+        ],
+        "initial_access_success": true,
+        "detection_evasion": "LLM_driven_v3",
+        "dwell_time_minutes": 45,
+        "llm_plan": {
+          "campaign_type": "Targeted Social Engineering and Lateral Movement",
+          "estimated_duration": "14-21 days",
+          "overall_success_prob": 0.63
+        },
+        "api_driven": true
+      },
+      "defense": {
+        "round": 10,
+        "phase": "blue_team_defense",
+        "attack_detected": true,
+        "containment_time_minutes": 12,
+        "mtd_triggered": true,
+        "defense_technique": "立即隔离受影响主机，终止可疑进程，收集内存和磁盘取证，阻断C2通信，并分析钓鱼邮件来源。",
+        "llm_triage": {
+          "priority": "critical",
+          "escalate_to_tier2": true,
+          "recommended_action": "立即隔离受影响主机，终止可疑进程，收集内存和磁盘取证，阻断C2通信，并分析钓鱼邮件来源。",
+          "confidence": 0.95
+        },
+        "api_driven": true
+      },
+      "org_optimization": {
+        "security_team_ratio": 0.1,
+        "training_frequency_weeks": 8,
+        "code_review_required": true,
+        "mfa_enforced": true,
+        "network_segmentation": "moderate",
+        "personality_mix": {
+          "conscientiousness": 0.7,
+          "openness": 0.5,
+          "risk_aversion": 0.6
+        },
+        "api_driven": true
+      },
+      "security_score": 88
+    }
+  ],
+  "api_stats": {
+    "llm": {
+      "calls": 12,
+      "total_tokens": 10434,
+      "provider": "deepseek",
+      "cache_size": 11
+    },
+    "threat_intel": {
+      "vt_queries": 0,
+      "abuseipdb_queries": 0,
+      "shodan_queries": 0,
+      "otx_queries": 0,
+      "urlscan_queries": 0,
+      "total": 0,
+      "deepseek_ti_queries": 15,
+      "deepseek_ti_cache": 8
+    }
+  }
+}
