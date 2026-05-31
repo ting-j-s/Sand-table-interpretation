@@ -1,3 +1,0 @@
-2026-05-31T12:43:29.793Z SIEM-ALERT [LOW] Unusual DNS Query Volume Status=MONITORING Assigned=SOC-Tier1
-2026-05-31T12:53:48.609Z SIEM-ALERT [MEDIUM] Multiple Failed Logins Status=INVESTIGATING Assigned=SOC-Tier2
-2026-05-31T13:14:29.363Z SIEM-ALERT [CRITICAL] C2 Beacon Detected Status=INVESTIGATING Assigned=SOC-Tier2 Details="JA3 fingerprint anomaly + periodic beacon to 203.0.113.3"

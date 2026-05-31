@@ -1,5 +1,0 @@
-2026-05-31T07:36:12.617Z SIEM-ALERT [LOW] Unusual DNS Query Volume Status=MONITORING Assigned=SOC-Tier1
-2026-05-31T07:43:11.051Z SIEM-ALERT [HIGH] Phishing Campaign Detected Status=INVESTIGATING Assigned=SOC-Tier3 Details="Multiple users clicked phishing email from urgent@ceo-phish.com"
-2026-05-31T07:55:46.940Z SIEM-ALERT [MEDIUM] Multiple Failed Logins Status=INVESTIGATING Assigned=SOC-Tier2
-2026-05-31T08:08:10.184Z SIEM-ALERT [HIGH] Lateral Movement Detected Status=INVESTIGATING Assigned=SOC-Tier3 Details="Suspicious SMB traffic from compromised workstation"
-2026-05-31T08:17:08.202Z SIEM-ALERT [CRITICAL] C2 Beacon Detected Status=INVESTIGATING Assigned=SOC-Tier2 Details="JA3 fingerprint anomaly + periodic beacon to 203.0.113.1"
