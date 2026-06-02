@@ -1,0 +1,37 @@
+{
+  "scenario_id": "enterprise_default",
+  "name": "企业网络安全沙盘",
+  "domain": "enterprise",
+  "description": "典型中型企业网络环境，含 AD 域控、VPN 接入、邮件系统、Web 服务、数据库和办公终端",
+  "organization_size": 500,
+  "actors": [
+    {"role_id": "employee", "name": "普通员工", "type": "user", "security_awareness": 0.4, "privilege_level": "normal"},
+    {"role_id": "ciso", "name": "CISO", "type": "admin", "security_awareness": 0.85, "privilege_level": "admin"},
+    {"role_id": "it_admin", "name": "IT管理员", "type": "admin", "security_awareness": 0.7, "privilege_level": "admin"},
+    {"role_id": "soc_analyst", "name": "SOC分析师", "type": "defender", "security_awareness": 0.8, "privilege_level": "elevated"},
+    {"role_id": "red_team", "name": "红队攻击者", "type": "attacker", "security_awareness": 0.0, "privilege_level": "normal"},
+    {"role_id": "blue_team", "name": "蓝队防御者", "type": "defender", "security_awareness": 0.95, "privilege_level": "elevated"}
+  ],
+  "assets": [
+    {"asset_id": "dc01", "name": "域控制器 AD-DC01", "asset_type": "server", "ip": "10.0.1.10", "services": ["ldap","kerberos","dns"], "criticality": 0.95, "data_sensitivity": 0.9},
+    {"asset_id": "vpn01", "name": "VPN 网关", "asset_type": "server", "ip": "203.0.113.10", "services": ["openvpn","ipsec"], "criticality": 0.7, "data_sensitivity": 0.3},
+    {"asset_id": "mail01", "name": "Exchange 邮件服务器", "asset_type": "server", "ip": "10.0.1.20", "services": ["smtp","imap","owa"], "criticality": 0.8, "data_sensitivity": 0.7},
+    {"asset_id": "web01", "name": "Web 服务器", "asset_type": "server", "ip": "203.0.113.20", "services": ["http","https"], "criticality": 0.6, "data_sensitivity": 0.4},
+    {"asset_id": "sql01", "name": "SQL Server 数据库", "asset_type": "database", "ip": "10.0.1.30", "services": ["mssql"], "criticality": 0.95, "data_sensitivity": 0.95},
+    {"asset_id": "endpoint", "name": "办公终端 (×200)", "asset_type": "endpoint", "ip": "10.0.2.0/24", "services": [], "criticality": 0.4, "data_sensitivity": 0.5}
+  ],
+  "services": ["ldap","dns","smtp","http","https","mssql","ssh","rdp"],
+  "attack_tactics": ["phishing","lateral_movement","privilege_escalation","data_exfiltration","ransomware"],
+  "defense_layers": ["network","endpoint","identity","siem"],
+  "log_sources": [
+    {"name": "auth","enabled": true},{"name": "email","enabled": true},{"name": "proxy","enabled": true},
+    {"name": "endpoint","enabled": true},{"name": "firewall","enabled": true},{"name": "ids","enabled": true},
+    {"name": "dns","enabled": true},{"name": "siem","enabled": true},{"name": "netflow","enabled": true}
+  ],
+  "evaluation": {"metrics": ["data_leakage_risk","business_downtime","alert_response_time","detection_rate"],"business_impact_weight": 0.5,"detection_weight": 0.5,"continuity_weight": 0.5},
+  "threat_intel_iocs": ["45.155.205.233","194.26.29.114"],
+  "defense_maturity": 0.5,
+  "user_security_awareness": 0.5,
+  "business_criticality": 0.7,
+  "strategy_hint": "重点关注: AD域控加固、邮件钓鱼防护、VPN安全策略、数据库访问审计、端点EDR部署"
+}

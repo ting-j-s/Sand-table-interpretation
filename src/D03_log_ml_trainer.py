@@ -5,8 +5,8 @@ import json, glob, os, re, pickle, numpy as np
 from pathlib import Path
 from datetime import datetime
 
-LOG_DIR = Path(__file__).parent / "company_logs"
-MODEL_DIR = Path(__file__).parent / "trained_models"
+LOG_DIR = Path(__file__).parent.parent / "output" / "scenario_logs"
+MODEL_DIR = Path(__file__).parent.parent / "output" / "trained_models"
 MODEL_DIR.mkdir(exist_ok=True)
 
 class LogFeatureExtractor:

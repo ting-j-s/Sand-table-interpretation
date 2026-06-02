@@ -24,10 +24,14 @@ D03 Real Runner — 真实API统一运行入口
 import sys, os, json, time, argparse, logging
 from pathlib import Path
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Optional
 
 BASE_DIR = Path(__file__).parent.absolute()
 sys.path.insert(0, str(BASE_DIR))
+sys.path.insert(0, str(BASE_DIR.parent))
+
+from D03_scenario_spec import ScenarioSpec
+from D03_scenario_loader import ScenarioLoader
 
 logging.basicConfig(level=logging.INFO, format='[%(name)s] %(message)s')
 logger = logging.getLogger("D03_Runner")
@@ -36,12 +40,14 @@ logger = logging.getLogger("D03_Runner")
 class D03RealRunner:
     """D03真实API统一运行器"""
 
-    def __init__(self, mode: str = "mock", enable_sandbox: bool = False):
+    def __init__(self, mode: str = "mock", enable_sandbox: bool = False,
+                 scenario_spec: Optional[ScenarioSpec] = None):
         self.mode = mode
         self.enable_sandbox = enable_sandbox
         self.session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.start_time = time.time()
         self.results: Dict = {}
+        self.scenario_spec = scenario_spec
 
         # 组件引用
         self.cfg = None
@@ -50,7 +56,8 @@ class D03RealRunner:
         self.real_agents = None
         self.real_sandbox = None
 
-        logger.info(f"D03 Runner启动: mode={mode}, sandbox={enable_sandbox}, session={self.session_id}")
+        sc_name = scenario_spec.scenario_id if scenario_spec else "default"
+        logger.info(f"D03 Runner启动: mode={mode}, sandbox={enable_sandbox}, scenario={sc_name}, session={self.session_id}")
 
     def initialize(self):
         """按模式初始化所有组件"""
@@ -122,23 +129,39 @@ class D03RealRunner:
 
     def run_scenario(self, scenario_name: str = "apt_campaign", rounds: int = 10) -> Dict:
         """运行指定场景"""
+        sc = self.scenario_spec
+        sc_name = sc.name if sc else scenario_name
+        sc_id = sc.scenario_id if sc else scenario_name
+
         print(f"\n{'='*70}")
-        print(f"  场景: {scenario_name} | 轮次: {rounds}")
+        print(f"  场景: {sc_name} ({sc.domain if sc else 'default'}) | 轮次: {rounds}")
         print(f"{'='*70}")
 
         scenario_results = {
+            "scenario_id": sc_id,
+            "scenario_name": sc_name,
+            "domain": sc.domain if sc else "generic",
             "scenario": scenario_name,
             "rounds": rounds,
             "mode": self.mode,
             "session_id": self.session_id,
             "start_time": datetime.now().isoformat(),
+            "scenario_spec": sc.to_target_profile() if sc else {},
+            "scenario_metrics": sc.get_scenario_metrics() if sc else {},
         }
 
         # === 威胁情报侦察阶段 ===
         if self.threat_intel:
             print("\n[威胁情报] 执行预侦察...")
-            # 对模拟目标IP进行情报查询
-            target_ips = ["45.155.205.233", "194.26.29.114", "185.130.5.253"]
+            # 优先使用场景 IOC，其次使用场景资产 IP，再次使用默认 IP
+            if sc and sc.threat_intel_iocs:
+                target_ips = list(sc.threat_intel_iocs)
+            elif sc and sc.assets:
+                target_ips = [a.ip for a in sc.assets if a.ip and "/" not in str(a.ip)][:4]
+            else:
+                target_ips = ["45.155.205.233", "194.26.29.114"]
+            if not target_ips:
+                target_ips = ["8.8.8.8"]
             recon_results = {}
             for ip in target_ips:
                 try:
@@ -153,14 +176,17 @@ class D03RealRunner:
         # === 多智能体对抗阶段 ===
         if self.real_agents:
             print("\n[多智能体] 开始红蓝对抗...")
-            target = {
-                "name": f"scenario_{scenario_name}",
-                "ip": "10.0.1.100",
-                "services": ["web", "ssh", "rdp", "dns", "sql"],
-                "defense_maturity": 0.3 + 0.1 * rounds / 10,
-            }
+            if sc:
+                target = sc.to_target_profile()
+            else:
+                target = {
+                    "name": f"scenario_{scenario_name}",
+                    "ip": "10.0.1.100",
+                    "services": ["web", "ssh", "rdp", "dns", "sql"],
+                    "defense_maturity": 0.3 + 0.1 * rounds / 10,
+                }
             agent_rounds = []
-            for r in range(1, min(rounds + 1, 11)):  # 最多10轮真实API对抗
+            for r in range(1, min(rounds + 1, 11)):
                 result = self.real_agents.run_round(r, target)
                 agent_rounds.append(result)
                 if r % 3 == 0:
@@ -181,11 +207,13 @@ class D03RealRunner:
             scenario_results["sandbox_tests"] = escape_results
 
         # === 传统编排器运行 ===
-        print("\n[编排器] 运行传统沙盘...")
+        print("\n[编排器] 运行沙盘...")
         from integration.D03_沙盘编排器_基础版 import SandboxOrchestrator
+        org_size = sc.organization_size if sc else 50
         orch = SandboxOrchestrator(
-            rounds=rounds, org_size=50,
-            use_real_api=(self.mode != "mock")
+            rounds=rounds, org_size=org_size,
+            use_real_api=(self.mode != "mock"),
+            scenario_spec=sc,
         )
         orch_path = orch.run_full_simulation()
         scenario_results["orchestrator_report"] = str(orch_path)
@@ -275,13 +303,20 @@ class D03RealRunner:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="D03 Real Runner — 真实API驱动的沙盘演绎系统",
+        description="D03 Real Runner — 真实API驱动的通用安全场景沙盘演绎系统",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例:
-  python D03_real_runner.py --mode mock --rounds 10
-  python D03_real_runner.py --mode real --rounds 20 --scenario apt_campaign
-  python D03_real_runner.py --mode full --rounds 30 --enable-sandbox
+  python D03_real_runner.py --list-scenarios
+  python D03_real_runner.py --mode mock --rounds 2 --scenario enterprise_default
+  python D03_real_runner.py --mode mock --rounds 2 --scenario campus_network
+  python D03_real_runner.py --mode mock --rounds 2 --scenario hospital_medical_system
+  python D03_real_runner.py --mode mock --rounds 2 --scenario industrial_control_system
+  python D03_real_runner.py --mode mock --rounds 2 --scenario cloud_native_platform
+  python D03_real_runner.py --mode mock --rounds 2 --scenario ecommerce_platform
+  python D03_real_runner.py --mode mock --rounds 2 --scenario scenarios/custom.json
+  python D03_real_runner.py --mode real --rounds 20 --scenario enterprise_default
+  python D03_real_runner.py --mode full --rounds 30 --enable-sandbox --scenario cloud_native_platform
 
 环境变量 (至少设置一个LLM API):
   DEEPSEEK_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY
@@ -292,23 +327,50 @@ def main():
     )
     parser.add_argument("--mode", choices=["mock", "real", "full"], default="mock",
                        help="运行模式: mock=模拟, real=真实API, full=完整(API+沙箱)")
-    parser.add_argument("--rounds", type=int, default=10, help="对抗轮次 (默认10)")
-    parser.add_argument("--scenario", default="apt_campaign",
-                       choices=["apt_campaign", "ransomware_outbreak", "data_exfiltration", "cloud_breach"],
-                       help="场景选择")
+    parser.add_argument("--rounds", type=int, default=2, help="对抗轮次 (默认2)")
+    parser.add_argument("--scenario", default=None,
+                       help="场景 ID (如 enterprise_default) 或 JSON 文件路径")
+    parser.add_argument("--list-scenarios", action="store_true", help="列出所有可用场景")
     parser.add_argument("--enable-sandbox", action="store_true", help="启用Docker沙箱")
     parser.add_argument("--skip-sandbox-tests", action="store_true", help="跳过沙箱逃逸测试")
 
     args = parser.parse_args()
 
+    if args.list_scenarios:
+        print("\n可用安全场景:\n")
+        for s in ScenarioLoader.list_scenarios():
+            print(f"  [{s['domain']:12s}] {s['id']:35s} {s['name']}")
+        print(f"\n用法: python {__file__} --mode mock --rounds 2 --scenario <场景ID>")
+        return
+
+    # 加载场景
+    scenario_spec = None
+    if args.scenario:
+        try:
+            scenario_spec = ScenarioLoader.load(args.scenario)
+            print(f"\n加载场景: {scenario_spec.name} ({scenario_spec.domain})")
+            print(f"  描述: {scenario_spec.description}")
+            print(f"  资产: {len(scenario_spec.assets)} 个 | 角色: {len(scenario_spec.actors)} 个")
+            print(f"  日志源: {scenario_spec.get_enabled_log_sources()}")
+            print(f"  防御成熟度: {scenario_spec.defense_maturity}")
+            if scenario_spec.strategy_hint:
+                print(f"  策略提示: {scenario_spec.strategy_hint}")
+        except FileNotFoundError as e:
+            print(f"错误: {e}")
+            return
+        except Exception as e:
+            logger.error(f"场景加载失败: {e}")
+            return
+
     runner = D03RealRunner(
         mode=args.mode,
         enable_sandbox=args.enable_sandbox and not args.skip_sandbox_tests,
+        scenario_spec=scenario_spec,
     )
 
     try:
         runner.initialize()
-        runner.run_scenario(scenario_name=args.scenario, rounds=args.rounds)
+        runner.run_scenario(scenario_name=args.scenario or "default", rounds=args.rounds)
         runner.save_report()
     except KeyboardInterrupt:
         print("\n[中断] 用户取消运行")

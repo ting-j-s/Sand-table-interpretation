@@ -1,0 +1,38 @@
+{
+  "scenario_id": "cloud_native_platform",
+  "name": "云原生平台安全沙盘",
+  "domain": "cloud",
+  "description": "典型云原生环境，含 Kubernetes 集群、容器镜像仓库、API Gateway、IAM 和对象存储",
+  "organization_size": 200,
+  "actors": [
+    {"role_id": "cloud_admin","name": "云管理员","type": "admin","security_awareness": 0.75,"privilege_level": "admin"},
+    {"role_id": "devops","name": "DevOps 工程师","type": "user","security_awareness": 0.5,"privilege_level": "elevated"},
+    {"role_id": "developer","name": "开发人员","type": "user","security_awareness": 0.4,"privilege_level": "normal"},
+    {"role_id": "soc","name": "云SOC","type": "defender","security_awareness": 0.8,"privilege_level": "elevated"},
+    {"role_id": "red_team","name": "红队","type": "attacker","security_awareness": 0.0,"privilege_level": "normal"},
+    {"role_id": "blue_team","name": "蓝队","type": "defender","security_awareness": 0.9,"privilege_level": "elevated"}
+  ],
+  "assets": [
+    {"asset_id": "k8s_cluster","name": "Kubernetes 集群","asset_type": "container","ip": "10.4.1.0/24","services": ["k8s-api","etcd"],"criticality": 0.95,"data_sensitivity": 0.8},
+    {"asset_id": "registry","name": "容器镜像仓库","asset_type": "server","ip": "10.4.1.100","services": ["https","tcp"],"criticality": 0.8,"data_sensitivity": 0.6},
+    {"asset_id": "api_gw","name": "API Gateway","asset_type": "server","ip": "203.0.114.10","services": ["https"],"criticality": 0.9,"data_sensitivity": 0.7},
+    {"asset_id": "iam","name": "IAM 身份管理","asset_type": "server","ip": "10.4.1.10","services": ["ldap","oidc","saml"],"criticality": 0.95,"data_sensitivity": 0.9},
+    {"asset_id": "s3_storage","name": "对象存储 S3","asset_type": "server","ip": "10.4.2.0/24","services": ["s3-api"],"criticality": 0.7,"data_sensitivity": 0.85},
+    {"asset_id": "microsvc","name": "微服务集群","asset_type": "container","ip": "10.4.3.0/24","services": ["grpc","http","kafka"],"criticality": 0.8,"data_sensitivity": 0.6},
+    {"asset_id": "cd_pipeline","name": "CI/CD 流水线","asset_type": "server","ip": "10.4.1.50","services": ["jenkins","git"],"criticality": 0.7,"data_sensitivity": 0.75}
+  ],
+  "services": ["k8s-api","etcd","https","ldap","oidc","s3-api","grpc","kafka"],
+  "attack_tactics": ["container_escape","privilege_escalation","secret_theft","supply_chain","api_abuse"],
+  "defense_layers": ["network","identity","container","siem","api"],
+  "log_sources": [
+    {"name": "cloud_audit","enabled": true},{"name": "k8s_audit","enabled": true},{"name": "api_gateway","enabled": true},
+    {"name": "auth","enabled": true},{"name": "dns","enabled": true},{"name": "endpoint","enabled": true},
+    {"name": "siem","enabled": true}
+  ],
+  "evaluation": {"metrics": ["privilege_escalation_paths","container_escape_risk","api_abuse_rate","object_storage_exposure"],"business_impact_weight": 0.5,"detection_weight": 0.5,"continuity_weight": 0.5},
+  "threat_intel_iocs": ["10.4.1.0"],
+  "defense_maturity": 0.55,
+  "user_security_awareness": 0.5,
+  "business_criticality": 0.7,
+  "strategy_hint": "重点关注: IAM 最小权限、K8s Audit 审计、容器镜像扫描、Secret 泄露检测、API 限流"
+}

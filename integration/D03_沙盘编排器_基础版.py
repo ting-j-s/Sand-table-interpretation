@@ -1,14 +1,15 @@
 """
 D03 — 沙盘演绎集成管道 (真实API版)
 ====================================
-架构: 真实LLM API + 真实威胁情报 + 真实多智能体 + CybORG仿真引擎
+架构: 真实LLM API + 真实威胁情报 + 真实多智能体 + 通用安全场景
 所有API密钥通过环境变量管理
 
-用法: python D03_sandbox_orchestrator.py --rounds 10 --org-size 50 --real
+用法: python D03_sandbox_orchestrator.py --rounds 10 --org-size 50 --real --scenario enterprise_default
 """
 import json, os, time, argparse, sys
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.insert(0, str(BASE_DIR))
@@ -22,11 +23,13 @@ RESULTS_DIR.mkdir(exist_ok=True)
 
 
 class SandboxOrchestrator:
-    """沙盘演绎总控 — 支持真实API模式和模拟模式"""
+    """沙盘演绎总控 — 支持真实API模式和模拟模式，支持通用安全场景"""
 
-    def __init__(self, rounds: int = 10, org_size: int = 50, use_real_api: bool = False):
+    def __init__(self, rounds: int = 10, org_size: int = 50, use_real_api: bool = False,
+                 scenario_spec: Optional[object] = None):
         self.rounds = rounds
-        self.org_size = org_size
+        self.scenario_spec = scenario_spec
+        self.org_size = scenario_spec.organization_size if scenario_spec else org_size
         self.session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.history = []
         self.use_real_api = use_real_api
@@ -41,7 +44,9 @@ class SandboxOrchestrator:
         if use_real_api:
             self._init_real_apis()
 
+        sc_name = scenario_spec.scenario_id if scenario_spec else "default"
         print(f"[D03] Sandbox initialized: {self.session_id} | "
+              f"场景: {sc_name} | org_size={self.org_size} | "
               f"API模式: {'真实' if self.use_real_api and self.llm else '模拟'}")
 
     def _init_real_apis(self):
@@ -175,8 +180,18 @@ class SandboxOrchestrator:
             }
 
     def phase_org_optimize(self, round_num: int, results: list):
-        """组织优化 — LLM驱动的策略优化"""
+        """组织优化 — LLM驱动的策略优化（场景感知）"""
         print(f"[D03:R{round_num}] Optimizing organization...")
+
+        # 场景差异化信息
+        sc_info = ""
+        if self.scenario_spec:
+            sc_info = f"""
+场景领域: {self.scenario_spec.domain}
+场景名称: {self.scenario_spec.name}
+关键策略提示: {self.scenario_spec.strategy_hint or '通用安全策略'}
+业务关键性: {self.scenario_spec.business_criticality}
+"""
 
         if self.llm and self.use_real_api:
             context = {
@@ -186,13 +201,15 @@ class SandboxOrchestrator:
                 "total_rounds": max(len(self.history), 1),
             }
             prompt = f"""基于以下沙盘演绎数据，给出组织安全策略优化建议:
+{sc_info}
 {json.dumps(context, indent=2)}
 
 返回JSON: {{"security_team_ratio": 0.05-0.15, "training_frequency_weeks": 4-12,
 "code_review_required": bool, "mfa_enforced": bool, "network_segmentation": "flat/moderate/strict",
-"personality_mix": {{"conscientiousness": 0.5-0.9, "openness": 0.3-0.7, "risk_aversion": 0.3-0.8}}}}"""
+"personality_mix": {{"conscientiousness": 0.5-0.9, "openness": 0.3-0.7, "risk_aversion": 0.3-0.8}},
+"domain_strategy": "<场景安全策略摘要>"}}"""
             result = self.llm.chat_json(
-                "你是CISO，负责组织安全策略优化。请基于数据给出合理的策略参数。",
+                "你是CISO，负责组织安全策略优化。请基于数据和场景领域给出差异化策略。",
                 prompt, temperature=0.4
             )
             org_params = result.get("parsed", {})
@@ -344,11 +361,15 @@ class SandboxOrchestrator:
         print(f"[D03] Full Sandbox Deduction ({'真实API' if self.use_real_api else '模拟'}模式)")
         print("=" * 60)
 
-        # 初始化日志生成器
+        # 初始化日志生成器（优先使用通用场景生成器）
         log_gen = None
         try:
-            from src.D03_log_generator import CompanyLogGenerator
-            log_gen = CompanyLogGenerator(org_size=self.org_size)
+            if self.scenario_spec:
+                from src.D03_scenario_log_generator import ScenarioLogGenerator
+                log_gen = ScenarioLogGenerator(scenario=self.scenario_spec)
+            else:
+                from src.D03_log_generator import CompanyLogGenerator
+                log_gen = CompanyLogGenerator(org_size=self.org_size)
         except ImportError:
             pass
 
@@ -396,6 +417,15 @@ class SandboxOrchestrator:
             "history": self.history,
             "api_stats": {},
         }
+        if self.scenario_spec:
+            report["scenario_id"] = self.scenario_spec.scenario_id
+            report["scenario_name"] = self.scenario_spec.name
+            report["domain"] = self.scenario_spec.domain
+            report["scenario_spec"] = self.scenario_spec.to_target_profile()
+            report["scenario_metrics"] = self.scenario_spec.get_scenario_metrics()
+            report["log_sources"] = self.scenario_spec.get_enabled_log_sources()
+            report["attack_tactics"] = self.scenario_spec.attack_tactics
+            report["defense_layers"] = self.scenario_spec.defense_layers
 
         if self.llm:
             report["api_stats"]["llm"] = self.llm.get_stats()
@@ -423,13 +453,21 @@ class SandboxOrchestrator:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="D03 沙盘演绎系统")
+    parser = argparse.ArgumentParser(description="D03 沙盘演绎系统 — 通用安全场景")
     parser.add_argument("--rounds", type=int, default=10, help="对抗轮次")
-    parser.add_argument("--org-size", type=int, default=50, help="虚拟组织规模")
+    parser.add_argument("--org-size", type=int, default=50, help="虚拟组织规模 (优先使用场景配置)")
     parser.add_argument("--real", action="store_true", help="启用真实API (需设置环境变量)")
+    parser.add_argument("--scenario", default=None, help="场景 ID 或 JSON 文件路径")
     args = parser.parse_args()
 
-    orch = SandboxOrchestrator(args.rounds, args.org_size, use_real_api=args.real)
+    scenario_spec = None
+    if args.scenario:
+        from src.D03_scenario_loader import ScenarioLoader
+        scenario_spec = ScenarioLoader.load(args.scenario)
+        print(f"加载场景: {scenario_spec.name} ({scenario_spec.domain})")
+
+    orch = SandboxOrchestrator(args.rounds, args.org_size,
+                                use_real_api=args.real, scenario_spec=scenario_spec)
     orch.run_full_simulation()
 
 

@@ -1,0 +1,38 @@
+{
+  "scenario_id": "hospital_medical_system",
+  "name": "医院医疗系统安全沙盘",
+  "domain": "hospital",
+  "description": "典型医院信息网络，含 HIS、PACS、电子病历、医保结算系统和医疗设备网段",
+  "organization_size": 800,
+  "actors": [
+    {"role_id": "doctor","name": "医生","type": "user","security_awareness": 0.4,"privilege_level": "elevated"},
+    {"role_id": "nurse","name": "护士","type": "user","security_awareness": 0.35,"privilege_level": "normal"},
+    {"role_id": "it_dept","name": "信息科","type": "admin","security_awareness": 0.6,"privilege_level": "admin"},
+    {"role_id": "device_admin","name": "设备管理员","type": "admin","security_awareness": 0.5,"privilege_level": "admin"},
+    {"role_id": "soc","name": "医疗SOC","type": "defender","security_awareness": 0.75,"privilege_level": "elevated"},
+    {"role_id": "red_team","name": "红队","type": "attacker","security_awareness": 0.0,"privilege_level": "normal"},
+    {"role_id": "blue_team","name": "蓝队","type": "defender","security_awareness": 0.9,"privilege_level": "elevated"}
+  ],
+  "assets": [
+    {"asset_id": "his","name": "HIS 医院信息系统","asset_type": "server","ip": "10.2.1.10","services": ["http","https","tcp"],"criticality": 0.98,"data_sensitivity": 0.9},
+    {"asset_id": "pacs","name": "PACS 影像系统","asset_type": "server","ip": "10.2.1.20","services": ["dicom","http"],"criticality": 0.9,"data_sensitivity": 0.85},
+    {"asset_id": "emr","name": "电子病历 EMR","asset_type": "database","ip": "10.2.1.30","services": ["mysql","tcp"],"criticality": 0.98,"data_sensitivity": 0.98},
+    {"asset_id": "insurance","name": "医保结算系统","asset_type": "server","ip": "10.2.1.40","services": ["https","tcp"],"criticality": 0.9,"data_sensitivity": 0.85},
+    {"asset_id": "med_device","name": "医疗设备网段","asset_type": "iot","ip": "10.2.3.0/24","services": ["dicom","tcp","modbus"],"criticality": 0.85,"data_sensitivity": 0.7},
+    {"asset_id": "workstation","name": "医护工作站 (×300)","asset_type": "endpoint","ip": "10.2.2.0/23","services": [],"criticality": 0.5,"data_sensitivity": 0.6}
+  ],
+  "services": ["http","https","dicom","mysql","tcp","modbus","dns"],
+  "attack_tactics": ["phishing","ransomware","credential_theft","lateral_movement","iot_exploit"],
+  "defense_layers": ["network","endpoint","identity","siem","iot"],
+  "log_sources": [
+    {"name": "auth","enabled": true},{"name": "database","enabled": true},{"name": "medical_system","enabled": true},
+    {"name": "endpoint","enabled": true},{"name": "firewall","enabled": true},{"name": "dns","enabled": true},
+    {"name": "siem","enabled": true}
+  ],
+  "evaluation": {"metrics": ["medical_service_continuity","patient_record_risk","medical_device_availability","emergency_response_delay"],"business_impact_weight": 0.7,"detection_weight": 0.4,"continuity_weight": 0.8},
+  "threat_intel_iocs": ["10.2.1.10","10.2.3.0"],
+  "defense_maturity": 0.45,
+  "user_security_awareness": 0.35,
+  "business_criticality": 0.95,
+  "strategy_hint": "重点关注: 医疗设备分区、电子病历访问控制、PACS 访问审计、业务连续性保障、防勒索演练"
+}

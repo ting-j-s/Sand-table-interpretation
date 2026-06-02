@@ -1,0 +1,38 @@
+{
+  "scenario_id": "ecommerce_platform",
+  "name": "电商平台安全沙盘",
+  "domain": "ecommerce",
+  "description": "典型电商平台环境，含 Web 前台、订单系统、支付系统、库存系统和用户数据库",
+  "organization_size": 300,
+  "actors": [
+    {"role_id": "customer","name": "用户","type": "user","security_awareness": 0.25,"privilege_level": "normal"},
+    {"role_id": "cs_agent","name": "客服","type": "user","security_awareness": 0.4,"privilege_level": "normal"},
+    {"role_id": "ops","name": "运维工程师","type": "admin","security_awareness": 0.65,"privilege_level": "admin"},
+    {"role_id": "payment_admin","name": "支付管理员","type": "admin","security_awareness": 0.7,"privilege_level": "admin"},
+    {"role_id": "soc","name": "电商SOC","type": "defender","security_awareness": 0.75,"privilege_level": "elevated"},
+    {"role_id": "red_team","name": "红队","type": "attacker","security_awareness": 0.0,"privilege_level": "normal"},
+    {"role_id": "blue_team","name": "蓝队","type": "defender","security_awareness": 0.9,"privilege_level": "elevated"}
+  ],
+  "assets": [
+    {"asset_id": "web_frontend","name": "Web 前台","asset_type": "server","ip": "203.0.115.10","services": ["https","http"],"criticality": 0.85,"data_sensitivity": 0.5},
+    {"asset_id": "order_sys","name": "订单系统","asset_type": "server","ip": "10.5.1.10","services": ["https","tcp"],"criticality": 0.9,"data_sensitivity": 0.8},
+    {"asset_id": "payment_sys","name": "支付系统","asset_type": "server","ip": "10.5.1.20","services": ["https"],"criticality": 0.98,"data_sensitivity": 0.98},
+    {"asset_id": "inventory_sys","name": "库存系统","asset_type": "server","ip": "10.5.1.30","services": ["https","tcp"],"criticality": 0.7,"data_sensitivity": 0.5},
+    {"asset_id": "user_db","name": "用户数据库","asset_type": "database","ip": "10.5.1.40","services": ["mysql","redis"],"criticality": 0.95,"data_sensitivity": 0.95},
+    {"asset_id": "cdb","name": "商品数据库","asset_type": "database","ip": "10.5.1.50","services": ["mysql"],"criticality": 0.6,"data_sensitivity": 0.4}
+  ],
+  "services": ["https","http","mysql","redis","tcp","dns"],
+  "attack_tactics": ["web_exploit","sqli","credential_theft","payment_fraud","data_exfiltration","api_abuse"],
+  "defense_layers": ["network","application","identity","siem","api"],
+  "log_sources": [
+    {"name": "web","enabled": true},{"name": "payment","enabled": true},{"name": "api_gateway","enabled": true},
+    {"name": "database","enabled": true},{"name": "auth","enabled": true},{"name": "firewall","enabled": true},
+    {"name": "siem","enabled": true}
+  ],
+  "evaluation": {"metrics": ["payment_fraud_risk","order_anomaly_rate","user_data_leakage_risk","business_availability"],"business_impact_weight": 0.7,"detection_weight": 0.5,"continuity_weight": 0.7},
+  "threat_intel_iocs": ["203.0.115.10","10.5.1.20"],
+  "defense_maturity": 0.5,
+  "user_security_awareness": 0.3,
+  "business_criticality": 0.85,
+  "strategy_hint": "重点关注: 支付风控、API 限流、订单异常检测、用户数据库访问审计、Web 应用防火墙"
+}

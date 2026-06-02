@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
 
-LOG_DIR = Path(__file__).parent / "company_logs"
+LOG_DIR = Path(__file__).parent.parent / "output" / "scenario_logs"
 
 USERS = [f"user_{i:02d}" for i in range(1, 31)]
 WORKSTATIONS = [f"WKS{i:04d}" for i in range(1, 26)]
